@@ -13,7 +13,7 @@ ParkingFeeCalculatorTest.java	Solo la primera prueba (fifteenMinutesShouldBeFree
 ParkingFeeCalculatorTest.java	No existe una prueba justo en el minuto 120 (el último minuto de la primera hora adicional); ya se prueba 121, pero falta el límite inferior de esa misma región.	Testing	Baja	Agregar una prueba con exactamente 120 minutos para confirmar que el redondeo hacia arriba no se activa un minuto antes de tiempo.
 
 
-Parte 4
+Parte 4 LegacyParkingReceipt
 
 LegacyParkingReceipt.java	La línea if (plate == "") compara Strings con == en vez de .equals() o .isEmpty(), lo cual puede dar resultados inesperados en Java.	Bug	Alta	Cambiar a plate.isEmpty() o plate.equals("").
 
@@ -43,16 +43,14 @@ LegacyParkingReceipt.java, línea 30	Remove the unnecessary boolean literal (jav
 PREGUNTAS 1-8
 
 P1
-
 Probar muchos valores dentro de la misma región no aporta mucho porque todos esos valores activan la misma rama de código y el mismo resultado esperado. Por ejemplo, probar con 20, 30 y 45 minutos siempre cae en la misma regla de $20 fijo, así que la segunda y tercera prueba no agrega información nueva sobre el comportamiento del programa.
 
 
 P2
-
 Identifiqué dos fronteras importantes: 15/16 minutos, donde se pasa de ser gratis a cobrar $20, y 60/61 minutos, donde termina la tarifa fija y empieza a cobrarse por hora adicional. Vale la pena probar cerca de ellas porque ahí es donde más comúnmente ocurren errores de lógica de "uno de más o uno de menos" (off-by-one), por ejemplo usar < en vez de <= en una condición.
+
+
 P3
-
-
 No. Que todas las pruebas estén en verde solo demuestra que el programa se comporta como se esperaba para los casos que decidimos probar. Si existe algún escenario que nadie pensó en cubrir, el programa puede fallar ahí aunque todas las pruebas existentes sigan pasando.
 
 
@@ -74,4 +72,5 @@ No, Sonar analiza cómo está escrito el código (sintaxis, patrones, buenas pr�
 
 P8
 a) Las pruebas unitarias verifican que el programa se comporte como se espera al ejecutarlo con datos reales; Sonar no ejecuta el código, solo lo analiza de forma estática, así que puede pasar por alto errores de lógica que solo aparecen al correr el programa. 
+
 b) El code review humano aporta juicio sobre el negocio, claridad para otras personas del equipo, y decisiones de diseño que ninguna herramienta automática puede evaluar por sí sola.

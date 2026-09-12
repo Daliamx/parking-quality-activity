@@ -1,8 +1,14 @@
 ## Code review manual
-	Hallazgo	Tipo	Severidad	Propuesta
+Archivo	Hallazgo	Tipo	Severidad	Propuesta
 ParkingFeeCalculator.java	Los valores 15, 60, 80, 150 y 20 aparecen directamente en el código sin ningún nombre que explique qué representan.	Maintainability	Media	Definir constantes como FREE_MINUTES_LIMIT = 15, MAX_NORMAL_FEE = 80, LOST_TICKET_FEE = 150 para que el significado sea explícito y sea más fácil cambiar las reglas de negocio a futuro.
 ParkingFeeCalculator.java	La validación de lostTicket ocurre antes que la validación de minutos negativos, así que un boleto perdido con minutos negativos nunca lanza la excepción esperada.	Bug	Media	Decidir si ese orden es intencional; si no lo es, validar primero los minutos negativos independientemente de lostTicket, y documentarlo con un comentario si se deja así a propósito.
 ParkingFeeCalculator.java	El cálculo del tope de $80 está mezclado dentro de la misma expresión de retorno (Math.min(fee, 80)), sin una variable con nombre que explique por qué existe ese límite.	Readability	Baja	Separar el cálculo en una variable intermedia, por ejemplo int cappedFee = Math.min(fee, MAX_NORMAL_FEE);, para que se entienda la regla de negocio sin tener que inferirla.
 ParkingFeeCalculator.java	El método tiene una estructura clara de "early returns" por cada regla de negocio, lo cual facilita seguir la lógica y agregar nuevas reglas en el futuro sin reescribir todo el método.	Design	(no aplica, es una fortaleza)	Mantener este patrón si se agregan más reglas de negocio más adelante.
 ParkingFeeCalculatorTest.java	Solo la primera prueba (fifteenMinutesShouldBeFree) tiene los comentarios explícitos de Arrange/Act/Assert; el resto sigue la misma estructura pero sin marcarla.	Readability	Baja	Agregar los comentarios // Arrange, // Act, // Assert de forma consistente en todas las pruebas.
 ParkingFeeCalculatorTest.java	No existe una prueba justo en el minuto 120 (el último minuto de la primera hora adicional); ya se prueba 121, pero falta el límite inferior de esa misma región.	Testing	Baja	Agregar una prueba con exactamente 120 minutos para confirmar que el redondeo hacia arriba no se activa un minuto antes de tiempo.
+
+
+LegacyParkingReceipt.java	La línea if (plate == "") compara Strings con == en vez de .equals() o .isEmpty(), lo cual puede dar resultados inesperados en Java.	Bug	Alta	Cambiar a plate.isEmpty() o plate.equals("").
+LegacyParkingReceipt.java	La línea boolean free = fee == 0 ? true : false; usa un operador ternario innecesario, ya que fee == 0 ya es un valor booleano por sí mismo.	Readability	Baja	Simplificar a boolean free = fee == 0;.
+LegacyParkingReceipt.java	La condición if (free == true) es redundante; comparar una variable booleana contra true no agrega información.	Readability	Baja	Simplificar a if (free) {.
+LegacyParkingReceipt.java	El método imprime directamente a consola con System.out.println dentro de la lógica de negocio, mezclando la construcción del recibo con el registro de eventos.	Design	Media	Usar un logger apropiado (ej. SLF4J) o quitar la línea si no es necesaria, separando responsabilidades.

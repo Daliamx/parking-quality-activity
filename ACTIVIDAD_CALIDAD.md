@@ -22,7 +22,8 @@ LegacyParkingReceipt.java	La condición if (free == true) es redundante; compara
 LegacyParkingReceipt.java	El método imprime directamente a consola con System.out.println dentro de la lógica de negocio, mezclando la construcción del recibo con el registro de eventos.	Design	Media	Usar un logger apropiado (ej. SLF4J) o quitar la línea si no es necesaria, separando responsabilidades.
 
 
-Parte 8
+Parte 8 ## Análisis con SonarQube for IDE
+
 
 Archivo/línea	Regla o mensaje	Explicación	¿Estoy de acuerdo?
 LegacyParkingReceipt.java, línea 14	Strings and Boxed types should be compared using "equals()" (java:S4973)	La comparación plate == "" usa el operador ==, que en Java compara si dos variables apuntan al mismo objeto en memoria, no si su contenido es igual. Debería usarse .equals() o .isEmpty().	Sí, porque este mismo problema ya lo había identificado yo en mi code review manual, y coincide con cómo funciona realmente Java.

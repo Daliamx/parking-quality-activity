@@ -55,7 +55,7 @@ class ParkingFeeCalculatorTest {
         );
     }
 
-    // --- Pruebas nuevas agregadas para la Actividad 4 ---
+    // --- Pruebas nuevas---
 
     @Test
     void sixteenMinutesShouldCostTwenty() {
